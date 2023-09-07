@@ -1,8 +1,7 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using DummyApi.Attributes;
-using Microsoft.AspNetCore.Authorization;  // Make sure this is included
 
-namespace DummyApi.Controllers
+namespace TestAuth.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -14,17 +13,15 @@ namespace DummyApi.Controllers
             return Ok("Public endpoint");
         }
 
-        // Apply the Authorize attribute here
         [HttpGet("private")]
-        [Authorize]  // Secure this endpoint
+        [Authorize]
         public IActionResult PrivateEndpoint()
         {
             return Ok("Private endpoint");
         }
 
-        // Apply the Authorize attribute with role
         [HttpGet("admin")]
-        [Authorize(Roles = "Admin")]  // Secure this endpoint and only allow Admin role
+        [Authorize(Roles = "Admin")]
         public IActionResult AdminEndpoint()
         {
             return Ok("Admin endpoint");

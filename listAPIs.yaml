@@ -1,0 +1,125 @@
+openapi: 3.0.0
+info:
+  title: E-commerce API
+  version: "1.0.0"
+  description: API for e-commerce operations, including product search and order retrieval with pagination.
+
+paths:
+  /products/search:
+    post:
+      summary: Search for products with pagination.
+      operationId: searchProducts
+      tags:
+        - Products
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                query:
+                  type: string
+                filters:
+                  type: object
+                  properties:
+                    priceRange:
+                      type: object
+                      properties:
+                        min:
+                          type: number
+                        max:
+                          type: number
+                    brands:
+                      type: array
+                      items:
+                        type: string
+                    inStock:
+                      type: boolean
+                sort:
+                  type: string
+                pagination:
+                  type: object
+                  properties:
+                    offset:
+                      type: integer
+                      default: 0
+                    limit:
+                      type: integer
+                      default: 10
+      responses:
+        '200':
+          description: A list of products that match the search criteria.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  products:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Product'
+                  total:
+                    type: integer
+                  offset:
+                    type: integer
+                  limit:
+                    type: integer
+
+  /orders:
+    get:
+      summary: Retrieve a list of orders with pagination.
+      operationId: listOrders
+      tags:
+        - Orders
+      parameters:
+        - in: query
+          name: offset
+          schema:
+            type: integer
+            default: 0
+        - in: query
+          name: limit
+          schema:
+            type: integer
+            default: 10
+      responses:
+        '200':
+          description: A paginated list of orders.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  orders:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Order'
+                  total:
+                    type: integer
+                  offset:
+                    type: integer
+                  limit:
+                    type: integer
+
+components:
+  schemas:
+    Product:
+      type: object
+      properties:
+        productId:
+          type: string
+        name:
+          type: string
+        price:
+          type: number
+    Order:
+      type: object
+      properties:
+        orderId:
+          type: string
+        date:
+          type: string
+          format: date
+        total:
+          type: number

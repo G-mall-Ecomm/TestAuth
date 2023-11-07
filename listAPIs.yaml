@@ -43,10 +43,8 @@ paths:
                   properties:
                     offset:
                       type: integer
-                      default: 0
                     limit:
                       type: integer
-                      default: 10
       responses:
         '200':
           description: A list of products that match the search criteria.
@@ -77,12 +75,10 @@ paths:
           name: offset
           schema:
             type: integer
-            default: 0
         - in: query
           name: limit
           schema:
             type: integer
-            default: 10
       responses:
         '200':
           description: A paginated list of orders.
